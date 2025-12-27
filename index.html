@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy New Year 2026</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Hidden code text at bottom */
+    .code-footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      opacity: 0.25;
+      letter-spacing: 2px;
+      pointer-events: none;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(180deg, #8B0000, #B22222, #DC143C, #FF6347);
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* ❄ Snow */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: white;
+      font-size: 1em;
+      user-select: none;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+
+    /* Center */
+    .container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 50px 60px;
+      max-width: 600px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 48px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      margin-bottom: 15px;
+      opacity: 0;
+      animation: textFade 1s ease forwards;
+    }
+
+    p:nth-child(2) { animation-delay: 1s; }
+    p:nth-child(3) { animation-delay: 2s; }
+
+    @keyframes textFade {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .signature {
+      margin-top: 30px;
+      font-style: italic;
+      opacity: 0;
+      animation: textFade 1s ease forwards;
+      animation-delay: 3s;
+    }
+
+    /* Music Button */
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      z-index: 100;
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+
+    /* 🎁 Gift Box */
+    .gift-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .gift-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gift-box {
+      position: relative;
+      cursor: pointer;
+      animation: float 3s ease-in-out infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .gift-box:hover {
+      animation: none;
+      transform: scale(1.1);
+      transition: transform 0.3s ease;
+    }
+
+    .gift-icon {
+      font-size: 120px;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+      display: block;
+      margin: 0 auto;
+    }
+
+    .gift-text {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: 500;
+      opacity: 0.9;
+      animation: pulse 2s ease-in-out infinite;
+      text-align: center;
+      width: 100%;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.9;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    .card {
+      display: none;
+    }
+
+    .card.show {
+      display: block;
+    }
+
+    /* 🎆 Fireworks */
+    .firework {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .firework-particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .rocket {
+      position: fixed;
+      width: 3px;
+      height: 10px;
+      background: linear-gradient(to top, #FFD700, #FF6347);
+      pointer-events: none;
+      z-index: 998;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- YouTube hidden player -->
+  <div id="youtube-player"></div>
+
+  <!-- 🎁 Gift Box Screen -->
+  <div class="gift-container" id="giftContainer">
+    <div class="gift-box" onclick="openGift()">
+      <div class="gift-icon">🎁</div>
+      <div class="gift-text">Click vào hộp quà để mở nhé</div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="card" id="card">
+      <h1>Happy New Year 2026</h1>
+
+      <p>Gửi <strong>mọi người</strong>,</p>
+
+      <p>
+        Chúc mọi người luôn vui vẻ, hạnh phúc và gặp thật nhiều điều tốt đẹp trong năm mới ✨
+      </p>
+
+      <p class="signature">
+        Happy New Year 2026! 🎉
+      </p>
+    </div>
+  </div>
+
+  <script>
+    /* ❄ Snow - Chỉ hiển thị trước khi mở hộp quà */
+    const snowCount = 40;
+    const snowflakes = [];
+    
+    for (let i = 0; i < snowCount; i++) {
+      const snow = document.createElement('div');
+      snow.className = 'snowflake';
+      snow.innerHTML = '❄';
+      snow.style.left = Math.random() * 100 + 'vw';
+      snow.style.fontSize = Math.random() * 10 + 10 + 'px';
+      snow.style.animationDuration = Math.random() * 5 + 5 + 's';
+      snow.style.opacity = Math.random();
+      document.body.appendChild(snow);
+      snowflakes.push(snow);
+    }
+
+    /* 🎆 Fireworks - Enhanced */
+    let fireworkInterval = null;
+
+    // Tạo rocket bay lên
+    function launchRocket(startX, startY, endX, endY, callback) {
+      const rocket = document.createElement('div');
+      rocket.className = 'rocket';
+      rocket.style.left = startX + 'px';
+      rocket.style.top = startY + 'px';
+      document.body.appendChild(rocket);
+
+      const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+      const duration = 800; // ms
+      const startTime = Date.now();
+
+      function animateRocket() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const currentX = startX + (endX - startX) * progress;
+        const currentY = startY + (endY - startY) * progress;
+        
+        rocket.style.left = currentX + 'px';
+        rocket.style.top = currentY + 'px';
+        rocket.style.transform = `rotate(${Math.atan2(endY - startY, endX - startX) * 180 / Math.PI + 90}deg)`;
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateRocket);
+        } else {
+          rocket.remove();
+          if (callback) callback(endX, endY);
+        }
+      }
+      
+      requestAnimationFrame(animateRocket);
+    }
+
+    // Tạo pháo hoa nổ với nhiều kiểu
+    function createFirework(x, y, type = 'circle') {
+      const colors = ['#FFD700', '#FF6347', '#FF1493', '#00CED1', '#FF69B4', '#FF4500', '#FFA500', '#FF0000', '#FFD700', '#FFFF00'];
+      let particleCount = 30;
+      let patterns = [];
+
+      if (type === 'circle') {
+        // Nổ tròn đều
+        for (let i = 0; i < particleCount; i++) {
+          const angle = (Math.PI * 2 * i) / particleCount;
+          const velocity = 2 + Math.random() * 4;
+          patterns.push({ angle, velocity });
+        }
+      } else if (type === 'star') {
+        // Nổ hình sao
+        particleCount = 20;
+        for (let i = 0; i < particleCount; i++) {
+          const angle = (Math.PI * 2 * i) / particleCount;
+          const velocity = 3 + Math.random() * 3;
+          patterns.push({ angle, velocity });
+        }
+        // Thêm các tia sao
+        for (let i = 0; i < 8; i++) {
+          const angle = (Math.PI * 2 * i) / 8;
+          patterns.push({ angle, velocity: 5 + Math.random() * 2 });
+        }
+      } else if (type === 'double') {
+        // Nổ 2 lớp
+        for (let i = 0; i < particleCount; i++) {
+          const angle = (Math.PI * 2 * i) / particleCount;
+          patterns.push({ angle, velocity: 2 + Math.random() * 2 });
+          patterns.push({ angle, velocity: 4 + Math.random() * 3, delay: 100 });
+        }
+      }
+
+      patterns.forEach((pattern, index) => {
+        setTimeout(() => {
+          const particle = document.createElement('div');
+          particle.className = 'firework-particle';
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          particle.style.backgroundColor = color;
+          particle.style.color = color;
+          particle.style.left = x + 'px';
+          particle.style.top = y + 'px';
+          
+          const vx = Math.cos(pattern.angle) * pattern.velocity;
+          const vy = Math.sin(pattern.angle) * pattern.velocity;
+          
+          document.body.appendChild(particle);
+          
+          let px = x;
+          let py = y;
+          let opacity = 1;
+          const gravity = 0.08;
+          let currentVy = vy;
+          
+          function animate() {
+            px += vx * 0.8;
+            py += currentVy;
+            currentVy += gravity;
+            opacity -= 0.015;
+            
+            particle.style.left = px + 'px';
+            particle.style.top = py + 'px';
+            particle.style.opacity = opacity;
+            particle.style.transform = `scale(${opacity})`;
+            
+            if (opacity > 0 && py < window.innerHeight + 100 && px > -100 && px < window.innerWidth + 100) {
+              requestAnimationFrame(animate);
+            } else {
+              particle.remove();
+            }
+          }
+          
+          requestAnimationFrame(animate);
+        }, pattern.delay || 0);
+      });
+    }
+
+    // Phát pháo hoa với rocket
+    function launchFireworkWithRocket() {
+      const startX = Math.random() * window.innerWidth;
+      const startY = window.innerHeight + 20;
+      const endX = 50 + Math.random() * (window.innerWidth - 100);
+      const endY = 50 + Math.random() * (window.innerHeight * 0.6);
+      
+      const fireworkType = ['circle', 'star', 'double'][Math.floor(Math.random() * 3)];
+      
+      launchRocket(startX, startY, endX, endY, (x, y) => {
+        createFirework(x, y, fireworkType);
+      });
+    }
+
+    // Bắt đầu pháo hoa liên tục
+    function startContinuousFireworks() {
+      // Pháo hoa ban đầu
+      setTimeout(() => {
+        launchFireworkWithRocket();
+      }, 500);
+      
+      setTimeout(() => {
+        launchFireworkWithRocket();
+      }, 1000);
+      
+      setTimeout(() => {
+        launchFireworkWithRocket();
+      }, 1500);
+
+      // Pháo hoa liên tục
+      if (fireworkInterval) {
+        clearInterval(fireworkInterval);
+      }
+      
+      fireworkInterval = setInterval(() => {
+        // Random 1-3 pháo hoa cùng lúc
+        const count = 1 + Math.floor(Math.random() * 3);
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            launchFireworkWithRocket();
+          }, i * 200);
+        }
+      }, 1200); // Mỗi 1.2 giây
+    }
+
+    // Dừng pháo hoa
+    function stopFireworks() {
+      if (fireworkInterval) {
+        clearInterval(fireworkInterval);
+        fireworkInterval = null;
+      }
+    }
+
+    /* 🎁 Open Gift */
+    function openGift() {
+      const giftContainer = document.getElementById('giftContainer');
+      const card = document.getElementById('card');
+
+      // Ẩn gift box
+      giftContainer.classList.add('hidden');
+
+      // Xóa tất cả tuyết rơi
+      snowflakes.forEach(snow => {
+        snow.style.transition = 'opacity 0.5s ease';
+        snow.style.opacity = '0';
+        setTimeout(() => snow.remove(), 500);
+      });
+
+      // Khởi động pháo hoa liên tục
+      setTimeout(() => {
+        startContinuousFireworks();
+      }, 300);
+
+      // Phát nhạc ngay lập tức (sau khi user click - đây là user interaction)
+      playMusic();
+
+      // Hiện card lời chúc
+      setTimeout(() => {
+        card.classList.add('show');
+      }, 500);
+    }
+
+    function playMusic() {
+      // Phát nhạc ngay khi user click mở quà (user interaction cho phép autoplay)
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        // Sử dụng YouTube API
+        try {
+          ytPlayer.playVideo();
+          console.log('Đang phát nhạc bằng YouTube API...');
+        } catch (e) {
+          console.log('Lỗi phát nhạc:', e);
+          // Fallback: dùng iframe
+          playMusicFallback();
+        }
+      } else {
+        // Nếu API chưa sẵn sàng, thử lại sau một chút
+        let retryCount = 0;
+        const retryInterval = setInterval(() => {
+          if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+            clearInterval(retryInterval);
+            try {
+              ytPlayer.playVideo();
+              console.log('Đang phát nhạc bằng YouTube API (retry)...');
+            } catch (e) {
+              playMusicFallback();
+            }
+          } else if (retryCount >= 10) {
+            // Sau 1 giây, dùng fallback
+            clearInterval(retryInterval);
+            playMusicFallback();
+          }
+          retryCount++;
+        }, 100);
+      }
+    }
+
+    function playMusicFallback() {
+      // Fallback: dùng iframe nếu API không hoạt động
+      if (!player) {
+        initPlayer();
+      }
+      if (player) {
+        player.src = getEmbedUrl(true);
+        console.log('Đang phát nhạc bằng iframe fallback...');
+      }
+    }
+
+    /* 🎵 YouTube Music - Sử dụng YouTube IFrame API */
+    // Video ID từ link: https://www.youtube.com/watch?v=dpdz82zW0kU
+    const videoId = 'dpdz82zW0kU'; // Happy New Year - ABBA
+    let ytPlayer = null;
+    let player = null; // Fallback iframe
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Hàm callback khi YouTube API sẵn sàng (phải là global)
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('youtube-player', {
+        height: '1',
+        width: '1',
+        videoId: videoId,
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'disablekb': 1,
+          'enablejsapi': 1,
+          'fs': 0,
+          'iv_load_policy': 3,
+          'loop': 1,
+          'modestbranding': 1,
+          'playsinline': 1,
+          'rel': 0,
+          'showinfo': 0
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    };
+
+    function onPlayerReady(event) {
+      console.log('YouTube Player đã sẵn sàng');
+      // Có thể set volume ở đây nếu cần
+      // event.target.setVolume(50);
+    }
+
+    function onPlayerStateChange(event) {
+      // 1 = playing, 2 = paused, 0 = ended
+      if (event.data === YT.PlayerState.PLAYING) {
+        console.log('Nhạc đang phát');
+      }
+    }
+
+    // Fallback: Hàm tạo URL embed cho iframe cũ
+    function getEmbedUrl(autoplay) {
+      return 'https://www.youtube.com/embed/' + videoId + 
+             '?autoplay=' + (autoplay ? '1' : '0') + 
+             '&mute=' + (autoplay ? '0' : '1') + 
+             '&loop=1' + 
+             '&playlist=' + videoId + 
+             '&controls=0' + 
+             '&rel=0' + 
+             '&playsinline=1' +
+             '&enablejsapi=1';
+    }
+
+    // Khởi tạo player (fallback nếu API không load được)
+    function initPlayer() {
+      if (!ytPlayer) {
+        // Tạo fallback iframe
+        const playerDiv = document.getElementById('youtube-player');
+        if (playerDiv && !player) {
+          player = document.createElement('iframe');
+          player.id = 'youtube-iframe-fallback';
+          player.width = '1';
+          player.height = '1';
+          player.style.position = 'fixed';
+          player.style.bottom = '-10px';
+          player.style.right = '-10px';
+          player.frameBorder = '0';
+          player.allow = 'autoplay; encrypted-media';
+          player.src = getEmbedUrl(false);
+          document.body.appendChild(player);
+        }
+      }
+    }
+
+    // Khởi tạo khi DOM sẵn sàng
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPlayer);
+    } else {
+      initPlayer();
+    }
+  </script>
+
+</body>
+</html>
