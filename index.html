@@ -97,10 +97,23 @@
       margin-bottom: 15px;
       opacity: 0;
       animation: textFade 1s ease forwards;
+      text-align: left;
     }
 
-    p:nth-child(2) { animation-delay: 1s; }
-    p:nth-child(3) { animation-delay: 2s; }
+    /* Gửi mọi người - sát bên trái */
+    p:first-of-type {
+      text-align: left;
+      padding-left: 0;
+    }
+
+    p:nth-child(2) { 
+      animation-delay: 1s; 
+      text-align: left;
+    }
+    p:nth-child(3) { 
+      animation-delay: 2s; 
+      text-align: left;
+    }
 
     @keyframes textFade {
       to {
@@ -114,6 +127,7 @@
       opacity: 0;
       animation: textFade 1s ease forwards;
       animation-delay: 3s;
+      text-align: right;
     }
 
     /* Music Button */
@@ -164,6 +178,87 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+    }
+
+    .gift-container.waiting {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .gift-container.waiting .gift-box {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Countdown Timer */
+    .countdown-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(3px);
+    }
+
+    .countdown-container.hidden {
+      display: none;
+    }
+
+    .countdown-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .countdown-timer {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .countdown-item {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px 25px;
+      min-width: 100px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .countdown-number {
+      font-size: 48px;
+      font-weight: 700;
+      color: #FFD700;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .countdown-label {
+      font-size: 14px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.9;
+    }
+
+    .countdown-message {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+      opacity: 0.9;
     }
 
     .gift-box {
@@ -264,6 +359,30 @@
   <!-- YouTube hidden player -->
   <div id="youtube-player"></div>
 
+  <!-- Countdown Timer -->
+  <div class="countdown-container" id="countdownContainer">
+    <div class="countdown-title">⏰ Đếm ngược đến năm mới 2026</div>
+    <div class="countdown-timer">
+      <div class="countdown-item">
+        <div class="countdown-number" id="days">00</div>
+        <div class="countdown-label">Ngày</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="hours">00</div>
+        <div class="countdown-label">Giờ</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="minutes">00</div>
+        <div class="countdown-label">Phút</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="seconds">00</div>
+        <div class="countdown-label">Giây</div>
+      </div>
+    </div>
+    <div class="countdown-message">Hãy đợi đến đúng thời khắc để mở quà nhé! 🎁</div>
+  </div>
+
   <!-- 🎁 Gift Box Screen -->
   <div class="gift-container" id="giftContainer">
     <div class="gift-box" onclick="openGift()">
@@ -292,6 +411,93 @@
   </div>
 
   <script>
+    /* ⏰ Countdown Timer */
+    const targetDate = new Date('2026-01-01T00:00:00').getTime();
+    let countdownInterval = null;
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        // Đã đến thời điểm - ẩn countdown, hiển thị hộp quà
+        clearInterval(countdownInterval);
+        const countdownContainer = document.getElementById('countdownContainer');
+        const giftContainer = document.getElementById('giftContainer');
+        
+        if (countdownContainer) {
+          countdownContainer.classList.add('hidden');
+        }
+        
+        if (giftContainer) {
+          giftContainer.classList.remove('waiting');
+        }
+        
+        return;
+      }
+
+      // Tính toán thời gian còn lại
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Cập nhật hiển thị
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+
+      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+
+    function initCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        // Đã qua thời điểm - hiển thị hộp quà ngay
+        const countdownContainer = document.getElementById('countdownContainer');
+        const giftContainer = document.getElementById('giftContainer');
+        
+        if (countdownContainer) {
+          countdownContainer.classList.add('hidden');
+        }
+        
+        if (giftContainer) {
+          giftContainer.classList.remove('waiting');
+        }
+      } else {
+        // Chưa đến - hiển thị countdown và ẩn hộp quà
+        const countdownContainer = document.getElementById('countdownContainer');
+        const giftContainer = document.getElementById('giftContainer');
+        
+        if (countdownContainer) {
+          countdownContainer.classList.remove('hidden');
+        }
+        
+        if (giftContainer) {
+          giftContainer.classList.add('waiting');
+        }
+        
+        // Cập nhật ngay lập tức
+        updateCountdown();
+        
+        // Cập nhật mỗi giây
+        countdownInterval = setInterval(updateCountdown, 1000);
+      }
+    }
+
+    // Khởi tạo countdown khi trang load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCountdown);
+    } else {
+      initCountdown();
+    }
+
     /* ❄ Snow - Chỉ hiển thị trước khi mở hộp quà */
     const snowCount = 40;
     const snowflakes = [];
@@ -479,6 +685,13 @@
 
     /* 🎁 Open Gift */
     function openGift() {
+      // Kiểm tra xem đã đến thời điểm chưa
+      const now = new Date().getTime();
+      if (now < targetDate) {
+        // Chưa đến thời điểm - không cho mở
+        return;
+      }
+
       const giftContainer = document.getElementById('giftContainer');
       const card = document.getElementById('card');
 
@@ -646,4 +859,3 @@
 
 </body>
 </html>
-
